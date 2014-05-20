@@ -52,13 +52,11 @@
 	<iostream>
 	<vector>
 
-1400609927 source:c:\users\hashr_000\skydrive\programming projects\thegameoflife\main.cpp
+1400613017 source:c:\users\hashr_000\skydrive\programming projects\thegameoflife\main.cpp
 	<curses.h>
 	<cstdlib>
 	<fstream>
 	<ctime>
-	<string>
-	<vector>
 	"player.h"
 	"tile.h"
 

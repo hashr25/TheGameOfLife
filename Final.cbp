@@ -36,8 +36,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="classes.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="player.cpp" />
+		<Unit filename="player.h" />
+		<Unit filename="tile.cpp" />
+		<Unit filename="tile.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
