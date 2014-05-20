@@ -19,66 +19,11 @@ using namespace std;
 #include <ctime>        //Seed for random
 #include <string>       //Strings
 #include <vector>       //Vectors
-#include "classes.h"  //comment this out and put 3 above back in
+#include "tile.h"       //tile class
+#include "player.h"     //player class
 //#include <iostream>             //can remove after debugging
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//Enumerated Type for Function
-enum tileFunction
-{
-    START,              //0
-    PAYOUT,             //1
-    PAYDAY,             //2
-    PAY_RAISE,          //3
-    LIFE_CARD,          //4
-    STOP,               //5
-    SPIN_TO_WIN,        //6
-    LAWSUIT,            //7
-    SPOUSE,             //8
-    BOY,                //9
-    GIRL,               //10
-    TWINS,              //11
-    RETURN_TO_SCHOOL,   //12
-    PATH_OF_LIFE,       //13
-    RISKY_OR_SAFE,      //14
-    LOSE_TURN,          //15
-    SHARE_THE_WEALTH,   //16
-    SPIN_AGAIN,         //17
-    CHOOSE_JOB,         //18
-    CHOOSE_CAREER,      //19
-    LOSE_JOB,           //20
-    CHOOSE_CAREER_OR_PAY_RAISE, //21
-    PAY_TAXES,          //22
-    TAX_REFUND,         //23
-    BUY_HOUSE,          //24
-    BUY_HOME,           //25
-    MOVE_TO_WEDDING,    //26
-    FIVE_PER_KID,       //27
-    FIFTY_PER_KID,      //28
-    TWENTY_FIVE_PLUS_FIVE_PER_KID,//29
-    DAY_CARE,           //30
-    SPIN_FOR_MONEY,     //31
-    END_OF_BOARD        //32
-};
-
-//Structures
-struct career
-{
-    string type;
-    string title;
-    int salary;
-    int maxSalary;
-    int taxes;
-};
-
-struct house
-{
-    string name;
-    int cost;
-    int worth;
-};
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
