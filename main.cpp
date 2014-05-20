@@ -17,10 +17,10 @@ using namespace std;
 #include <cstdlib>      //Random
 #include <fstream>      //files                //MAKE SURE YOU NEED ALL THESE WHEN YOU ARE DONE
 #include <ctime>        //Seed for random
-#include <string>       //Strings
-#include <vector>       //Vectors
-#include "tile.h"       //tile class
+//#include <string>       //Strings
+//#include <vector>       //Vectors
 #include "player.h"     //player class
+#include "tile.h"       //tile class
 //#include <iostream>             //can remove after debugging
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

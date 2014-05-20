@@ -52,15 +52,15 @@
 	<iostream>
 	<vector>
 
-1400598679 source:c:\users\hashr_000\skydrive\programming projects\thegameoflife\main.cpp
+1400609927 source:c:\users\hashr_000\skydrive\programming projects\thegameoflife\main.cpp
 	<curses.h>
 	<cstdlib>
 	<fstream>
 	<ctime>
 	<string>
 	<vector>
-	"tile.h"
 	"player.h"
+	"tile.h"
 
 1397610859 ..\..\..\..\..\..\..\..\..\program files (x86)\codeblocks\mingw\include\curses.h
 	<stdarg.h>
@@ -97,9 +97,9 @@
 1341013976 ..\..\..\..\..\..\..\..\..\program files (x86)\codeblocks\mingw\include\stdint.h
 	<stddef.h>
 
-1400599036 c:\users\hashr_000\skydrive\programming projects\thegameoflife\tile.h
+1400609994 c:\users\hashr_000\skydrive\programming projects\thegameoflife\tile.h
 
-1400599508 c:\users\hashr_000\skydrive\programming projects\thegameoflife\player.h
+1400610060 c:\users\hashr_000\skydrive\programming projects\thegameoflife\player.h
 	<curses.h>
 	<vector>
 	<string>
