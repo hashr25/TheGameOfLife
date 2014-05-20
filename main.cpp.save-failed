@@ -1,0 +1,592 @@
+/*
+The Game of Life
+Originally by Milton Bradley
+Program Written by Randy Hash
+CS202
+Final Project
+*/
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+***********************************************************************************************************************************
+*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+
+//Included Libraries
+#include <curses.h>     //Curses
+#include <cstdlib>      //Random
+#include <fstream>      //files                //MAKE SURE YOU NEED ALL THESE WHEN YOU ARE DONE
+#include <ctime>        //Seed for random
+#include <string>       //Strings
+#include <vector>       //Vectors
+//#include "structures.h"     //My Structures
+//#include "tile.h"           //My tile class
+//#include "player.h"         //My player class
+#include "classes.h"  //comment this out and put 3 above back in
+#include <iostream>             //can remove after debugging
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Forward Declarations
+void makeBoard(WINDOW*&);
+void printRoll(WINDOW*&, int);
+int spinSpinner(WINDOW*&);
+vector<house> getHouses(string);
+vector<career> getJobs(string);
+void makeBaseTiles(tile*&);
+void makeSplit(tile*&, string);
+void deleteTiles(tile*&);
+tile* findTile(tile*, int);
+
+int listLength(tile*);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+***********************************************************************************************************************************
+*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int main()
+{
+    srand(time(NULL));//random seed
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Curses Setup
+
+    initscr();//initialize the screen
+    curs_set(0);//set the cursor to be invisible
+    noecho();//Don't put user input on the screen
+
+    start_color();
+    init_pair(0, COLOR_RED, COLOR_BLACK);//color for Stops
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);//color for Paydays
+    init_pair(2, COLOR_BLUE, COLOR_BLACK);//color for Lawsuits
+    init_pair(3, COLOR_MAGENTA, COLOR_BLACK);//color for girls
+    init_pair(4, COLOR_CYAN, COLOR_BLACK);//color for boys
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Board Setup
+
+    int boardHeight = 40;
+    int boardWidth = 160;
+    int spinnerHeight = 6;
+    int spinnerWidth = 10;
+    int interfaceHeight = 15;
+    int interfaceWidth = 160;
+
+    WINDOW * gameBoard = NULL;
+    gameBoard = newwin(boardHeight,boardWidth, 3, 0);
+    WINDOW * spinner = NULL;
+    spinner = newwin(spinnerHeight,spinnerWidth, 17, 70);
+    WINDOW * interface = NULL;
+    interface = newwin(interfaceHeight, interfaceWidth, 37, 0);
+
+    makeBoard(gameBoard);
+
+    vector<house> starterHouses = getHouses("starterHouses.txt");
+    vector<house> homes = getHouses("houses.txt");
+
+    vector<career> jobs = getJobs("careers.txt");
+    vector<career> collegeJobs = getJobs("collegeCareers.txt");
+
+    tile* startTile = new tile;
+    tile* split1Head = new tile;
+    tile* split2Head = new tile;
+    tile* split3Head = new tile;
+    tile* split4Head = new tile;
+
+    makeBaseTiles(startTile);
+    makeSplit(split1Head, "split1.txt");
+    makeSplit(split2Head, "split2.txt");
+    makeSplit(split3Head, "split3.txt");
+    makeSplit(split4Head, "split4.txt");
+
+    //setup of splits
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //first split
+    startTile -> setSplit(split1Head);
+
+    tile* splitFrom = findTile(startTile, 11);
+    tile* splitTo = findTile(split1Head, 2);
+    splitFrom -> setNext(splitTo);
+
+    /*tile* temp = startTile;
+    tile* backTemp = split1Head;
+    for(int i = 0; i < 11; i++)
+    {
+        temp = temp -> getNext();
+    }
+    for(int i = 0; i < 2; i++)
+    {
+        backTemp = backTemp -> getNext();
+    }
+    backTemp -> setNext(temp);*/
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //second split
+
+    splitFrom = findTile(startTile, 49);
+    splitFrom -> setNext(split2Head);
+
+    splitFrom = findTile(startTile, 57);
+    splitTo = findTile(split2Head, 6);
+    splitFrom -> setNext(splitTo);
+
+    /*temp = startTile;
+    for(int i = 0; i < 49; i++)
+    {
+        temp = temp -> getNext();
+    }
+    temp -> setSplit(split2Head);
+    temp = startTile;
+    backTemp = split2Head;
+    for(int i = 0; i < 57; i++)
+    {
+        temp = temp -> getNext();
+    }
+    for(int i = 0; i < 6; i++)
+    {
+        backTemp = backTemp -> getNext();
+    }
+    backTemp -> setNext(temp);*/
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //third split
+
+    splitFrom = findTile(startTile, 80);
+    splitFrom -> setNext(split3Head);
+
+    splitFrom = findTile(startTile, 87);
+    splitTo = findTile(split3Head, 3);
+    splitFrom -> setNext(splitTo);
+
+    /*temp = startTile;
+    for(int i = 0; i < 80; i++)
+    {
+        temp = temp -> getNext();
+    }
+    temp -> setSplit(split3Head);
+    temp = startTile;
+    backTemp = split3Head;
+    for(int i = 0; i < 87; i++)
+    {
+        temp = temp -> getNext();
+    }
+    for(int i = 0; i < 3; i++)
+    {
+        backTemp = backTemp -> getNext();
+    }
+
+    backTemp -> setNext(temp);*/
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //fourth split
+
+    splitFrom = findTile(startTile, 105);
+    splitFrom -> setNext(split4Head);
+
+    splitFrom = findTile(startTile, 114);
+    splitTo = findTile(split4Head, 3);
+    splitFrom -> setNext(splitTo);
+
+    /*temp = startTile;
+    for(int i = 0; i < 105; i++)
+    {
+        temp = temp -> getNext();
+    }
+    temp -> setSplit(split4Head);
+    temp = startTile;
+    backTemp = split4Head;
+    for(int i = 0; i < 114; i++)
+    {
+        temp = temp -> getNext();
+    }
+    for(int i = 0; i < 3; i++)
+    {
+        backTemp = backTemp -> getNext();
+    }
+    backTemp -> setNext(temp);*/
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    werase(spinner);
+    wrefresh(spinner);
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Setup Players
+    player * user = new player;
+    user -> makeUserPlayer(interface);
+
+    player * computer = new player;
+    computer -> makeAIPlayer();
+    computer -> setY(21);
+    computer -> setX(74);
+    computer -> setInterfaceX(25);
+
+    bool isSame = true;
+    player * computer2 = new player;
+    while(isSame == true)
+    {
+        computer2 -> makeAIPlayer();
+        computer2 -> setY(21);
+        computer2 -> setX(75);
+        computer2 -> setInterfaceX(50);
+        if(computer -> getName() != computer2 -> getName())
+        {
+            isSame = false;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Print Everything commands
+    user -> printCar(interface);
+    computer -> printCar(interface);
+    computer2 -> printCar(interface);
+
+    user -> printPlayer(gameBoard);
+    computer -> printPlayer(gameBoard);
+    computer2 -> printPlayer(gameBoard);
+
+    wrefresh(gameBoard);
+    werase(spinner);
+    wrefresh(spinner);
+    wrefresh(interface);
+
+    int spin = spinSpinner(spinner);
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    GAME LOOP
+    v v v v v
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+bool gameOver = false;
+int turnCount = 0;
+
+while(gameOver != true)
+{
+
+}
+
+
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ^ ^ ^ ^ ^
+    GAME LOOP
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Closing Program
+    delwin(gameBoard);
+    delwin(spinner);
+    delwin(interface);
+
+    delete user;
+    delete computer;
+    delete computer2;
+
+    deleteTiles(startTile);
+    deleteTiles(split1Head);
+    deleteTiles(split2Head);
+    deleteTiles(split3Head);
+    deleteTiles(split4Head);
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    return 0;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+***********************************************************************************************************************************
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+//Function Declarations
+void makeBoard(WINDOW*& window)
+{
+    ifstream boardFile;
+    boardFile.open("gameBoard.txt");
+    string line = "";
+    int lineCounter = 0;
+    while(getline(boardFile, line))
+    {
+        for(int i = 0; i < line.size(); i++)
+        {
+            wmove(window, lineCounter, i);
+            waddch(window, line.at(i));
+        }
+        lineCounter++;
+        line = "";
+    }
+    boardFile.close();
+
+    wrefresh(window);//first screen refresh
+}
+
+void printRoll(WINDOW*& window, int roll)
+{
+    werase(window);
+
+    if(roll == 1)
+    {
+        mvwprintw(window, 0, 5, "1");
+        mvwprintw(window, 1, 5, "1");
+        mvwprintw(window, 2, 5, "1");
+        mvwprintw(window, 3, 5, "1");
+        mvwprintw(window, 4, 5, "1");
+        mvwprintw(window, 5, 5, "1");
+    }
+    else if(roll == 2)
+    {
+        mvwprintw(window, 0, 2, " 222 ");
+        mvwprintw(window, 1, 2, "2   2");
+        mvwprintw(window, 2, 2, "   2 ");
+        mvwprintw(window, 3, 2, "  2  ");
+        mvwprintw(window, 4, 2, " 2   ");
+        mvwprintw(window, 5, 2, "22222");
+    }
+    else if(roll == 3)
+    {
+        mvwprintw(window, 1, 3, "333 ");
+        mvwprintw(window, 2, 3, "   3");
+        mvwprintw(window, 3, 3, " 33");
+        mvwprintw(window, 4, 3, "   3");
+        mvwprintw(window, 5, 3, "333");
+    }
+    else if(roll == 4)
+    {
+        mvwprintw(window, 0, 2, "4   4");
+        mvwprintw(window, 1, 2, "4   4");
+        mvwprintw(window, 2, 2, "44444");
+        mvwprintw(window, 3, 2, "    4");
+        mvwprintw(window, 4, 2, "    4");
+        mvwprintw(window, 5, 2, "    4");
+    }
+    else if(roll == 5)
+    {
+        mvwprintw(window, 1, 3, "55555");
+        mvwprintw(window, 2, 3, "5    ");
+        mvwprintw(window, 3, 3, "5555 ");
+        mvwprintw(window, 4, 3, "    5");
+        mvwprintw(window, 5, 3, "5555 ");
+    }
+    else if(roll == 6)
+    {
+        mvwprintw(window, 0, 3, "  6 ");
+        mvwprintw(window, 1, 3, " 6  ");
+        mvwprintw(window, 2, 3, "6   ");
+        mvwprintw(window, 3, 3, "666 ");
+        mvwprintw(window, 4, 3, "6  6");
+        mvwprintw(window, 5, 3, " 66 ");
+    }
+    else if(roll == 7)
+    {
+        mvwprintw(window, 1, 2, "77777");
+        mvwprintw(window, 2, 2, "    7");
+        mvwprintw(window, 3, 2, "   7 ");
+        mvwprintw(window, 4, 2, "  7  ");
+        mvwprintw(window, 5, 2, " 7   ");
+    }
+    else if(roll == 8)
+    {
+        mvwprintw(window, 1, 3, " 888");
+        mvwprintw(window, 2, 3, "8   8");
+        mvwprintw(window, 3, 3, " 888");
+        mvwprintw(window, 4, 3, "8   8");
+        mvwprintw(window, 5, 3, " 888");
+    }
+    else if(roll == 9)
+    {
+        mvwprintw(window, 0, 3, " 99 ");
+        mvwprintw(window, 1, 3, "9  9");
+        mvwprintw(window, 2, 3, " 999");
+        mvwprintw(window, 3, 3, "   9");
+        mvwprintw(window, 4, 3, "  9 ");
+        mvwprintw(window, 5, 3, " 9  ");
+    }
+    else if(roll == 10)
+    {
+        mvwprintw(window, 0, 2, "1  000");
+        mvwprintw(window, 1, 2, "1 0   0");
+        mvwprintw(window, 2, 2, "1 0   0");
+        mvwprintw(window, 3, 2, "1 0   0");
+        mvwprintw(window, 4, 2, "1 0   0");
+        mvwprintw(window, 5, 2, "1  000");
+    }
+
+    wrefresh(window);
+}
+
+int spinSpinner(WINDOW*& window)
+{
+    int randomSpin;
+
+    for(int i = 0; i < 4000; i++)
+    {
+        randomSpin = rand() % 10 + 1;
+        printRoll(window, randomSpin);
+    }
+
+    return randomSpin;
+}
+
+vector<house> getHouses(string fileName)
+{
+    vector<house> houseVector;
+
+    ifstream houseFile;
+    houseFile.open(fileName.c_str());
+    string houseName = "";
+    int houseCost;
+    int houseWorth;
+    int counter = 0;
+
+    while(houseFile >> houseName >> houseCost >> houseWorth)
+    {
+        house temp;
+        temp.name = houseName;
+        temp.cost = houseCost;
+        temp.worth = houseWorth;
+        houseVector.push_back(temp);
+    }
+
+    houseFile.close();
+
+    return houseVector;
+}
+
+vector<career> getJobs(string fileName)
+{
+    vector<career> jobVector;
+
+    ifstream jobFile;
+    jobFile.open(fileName.c_str());
+
+    string jobName;
+    int baseSalary;
+    int topSalary;
+    int jobTaxes;
+
+    while(jobFile >> jobName >> baseSalary >> topSalary >> jobTaxes)
+    {
+        career temp;
+        temp.title = jobName;
+        temp.salary = baseSalary;
+        temp.maxSalary = topSalary;
+        temp.taxes = jobTaxes;
+        jobVector.push_back(temp);
+    }
+
+    jobFile.close();
+
+    return jobVector;
+}
+
+void makeBaseTiles(tile*& startPoint)
+{
+    ifstream baseTiles;
+    baseTiles.open("baseTiles.txt");
+
+    if(baseTiles.fail())
+    {
+        std::cout << "baseTiles f'ed up." << std::endl;
+    }
+
+    string tileInfo = "";
+
+    tile* temp = startPoint;
+    tile* newTemp = NULL;
+
+    while(getline(baseTiles, tileInfo))
+    {
+        temp -> setInfo(tileInfo);
+        newTemp = new tile;
+        temp -> setNext(newTemp);
+        temp = newTemp;
+    }
+
+    baseTiles.close();
+}
+
+void deleteTiles(tile*& startPoint)
+{
+    tile* temp = NULL;
+    while(startPoint != NULL)
+    {
+        temp = startPoint;
+        startPoint = startPoint -> getNext();
+        delete temp;
+    }
+    startPoint = NULL;
+}
+
+void makeSplit(tile*& splitStart, string fileName)
+{
+    ifstream splitTiles;
+    splitTiles.open(fileName.c_str());
+
+    if(splitTiles.fail())
+    {
+        std::cout << "Something f'ed up." << std::endl;
+    }
+
+    string tileInfo = "";
+
+    tile* temp = splitStart;
+    tile* newTemp = NULL;
+
+    while(getline(splitTiles, tileInfo))
+    {
+        temp -> setInfo(tileInfo);
+        newTemp = new tile;
+        temp -> setNext(newTemp);
+        temp = newTemp;
+    }
+
+    splitTiles.close();
+}
+
+void setTileInformation(tile*& startTile) // needs finished
+{
+    ifstream tileInformation;
+    tileInformation.open("baseTileData.txt");
+}
+
+tile* findTile(tile* startingPoint, int numberOfTile)
+{
+    tile* temp = startingPoint;
+    for(int i = 0; i < numberOfTile; i++)
+    {
+
+        temp = temp -> getNext();
+    }
+
+    return temp;
+}
+
+int listLength(tile* head)
+{
+    int nodeCounter = 0;
+
+    tile* temp = head;
+
+    while(temp != NULL)
+    {
+        nodeCounter++;
+
+        temp = temp -> getNext();
+    }
+
+    return nodeCounter;
+}

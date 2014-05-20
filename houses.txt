@@ -1,0 +1,6 @@
+DoubleWide+RV 300000 300000
+ExecutiveCape 400000 400000
+ModernVictorian 500000 500000
+LuxuryMountainRetreat 600000 600000
+PenthouseSuite 700000 700000
+Mansion 800000 800000

@@ -1,0 +1,337 @@
+#include <string>
+#include <iostream>
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+***********************************************************************************************************************************
+*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class tile
+{
+public:
+    // Constructor
+    tile() { /*cout << "Constructing a tile." << endl;*/ }
+    // Destructor
+    ~tile() { /*cout << "Destroying a tile." << endl;*/ }
+
+    //Member Methods
+
+
+    //Accessor Functions
+    void setInfo(string tileInfo) { info = tileInfo; }
+    string getInfo() { return info; }
+    void setPayout(int tilePayout) { payout = tilePayout; }
+    int getPayout() { return payout; }
+
+    //Private Data
+private:
+    string info;
+    int payout;
+};
+
+class player
+{
+public:
+    //Constructor
+    player()
+    {
+        /*cout << "Creating a Player" << endl;*/
+        salary = 0;money = 0;lifeCards = 0;kidCount = 0;
+        interfaceX = 0;interfaceY=0;
+        spouse = '_';kid1 = ' ';kid2 = '_';kid3 = ' ';kid4 = '_';
+    }
+    //Destructor
+    ~player() { /*cout << "Destroying a Player" << endl;*/ }
+
+    //Member Methods
+    void printCar(WINDOW*& window)
+    {
+        //Draw Car
+        mvwprintw(window, interfaceY + 0, interfaceX, "_________");
+        mvwprintw(window, interfaceY + 1, interfaceX, "|        \\");
+        mvwprintw(window, interfaceY + 2, interfaceX, "|         |");
+        mvwprintw(window, interfaceY + 3, interfaceX, "|________/");
+
+        //Print Information
+        mvwprintw(window, interfaceY + 5, interfaceX, "Name:       " );
+        mvwprintw(window, interfaceY + 5, interfaceX + 12, name.c_str());
+
+        mvwprintw(window, interfaceY + 6, interfaceX, "Salary:     $");
+        mvwprintw(window, interfaceY + 6, interfaceX + 13, "%d", salary);
+
+        mvwprintw(window, interfaceY + 7, interfaceX, "Money:      $");
+        mvwprintw(window, interfaceY + 7, interfaceX + 13, "%d", money);
+
+        mvwprintw(window, interfaceY + 8, interfaceX, "Life Cards: ");
+        mvwprintw(window, interfaceY + 8, interfaceX + 12, "%d", lifeCards);
+
+        //Print Family
+        if(gender == 'M')
+        {
+            mvwaddch(window, interfaceY + 1, interfaceX + 7, gender | COLOR_PAIR(4));
+        }
+        else if(gender =='F')
+        {
+            mvwaddch(window, interfaceY + 1, interfaceX + 7, gender | COLOR_PAIR(3));
+        }
+        /////////////////////////////////////////////
+        if(spouse == 'M')
+        {
+            mvwaddch(window, interfaceY + 3, interfaceX + 7, spouse | COLOR_PAIR(4));
+        }
+        else if(spouse =='F')
+        {
+            mvwaddch(window, interfaceY + 3, interfaceX + 7, spouse | COLOR_PAIR(3));
+        }
+        /////////////////////////////////////////////
+        if(kid1 == 'B')
+        {
+            mvwaddch(window, interfaceY + 1, interfaceX + 5, kid1 | COLOR_PAIR(4));
+        }
+        else if(kid1 =='G')
+        {
+            mvwaddch(window, interfaceY + 1, interfaceX + 5, kid1 | COLOR_PAIR(3));
+        }
+        //////////////////////////////////////////////
+        if(kid2 == 'B')
+        {
+            mvwaddch(window, interfaceY + 3, interfaceX + 5, kid2 | COLOR_PAIR(4));
+        }
+        else if(kid2 =='G')
+        {
+            mvwaddch(window, interfaceY + 3, interfaceX + 5, kid2 | COLOR_PAIR(3));
+        }
+        //////////////////////////////////////////////
+        if(kid3 == 'B')
+        {
+            mvwaddch(window, interfaceY + 1, interfaceX + 3, kid3 | COLOR_PAIR(4));
+        }
+        else if(kid3 =='G')
+        {
+            mvwaddch(window, interfaceY + 1, interfaceX + 3, kid3 | COLOR_PAIR(3));
+        }
+        //////////////////////////////////////////////
+        if(kid4 == 'B')
+        {
+            mvwaddch(window, interfaceY + 3, interfaceX + 3, kid4 | COLOR_PAIR(4));
+        }
+        else if(kid4 =='G')
+        {
+            mvwaddch(window, interfaceY + 3, interfaceX + 3, kid4 | COLOR_PAIR(3));
+        }
+        //////////////////////////////////////////////
+    }
+
+    void makeUserPlayer(WINDOW*& window)
+    {
+        bool goodInput = false;
+
+        //gender
+        while(goodInput != true)
+        {
+            mvwprintw(window, 0, 0, "Are you (M)ale or (F)emale: ");
+            char userGender;
+            wmove(window, 0, 28);
+            userGender = wgetch(window);
+
+            if(userGender == 'M' || userGender == 'F')
+            {
+                goodInput = true;
+                gender = userGender;
+            }
+            else
+            {
+                goodInput = false;
+            }
+        }
+
+
+        goodInput = false;
+
+        //name
+        while(goodInput != true)
+        {
+            werase(window);
+            mvwprintw(window, 0, 0, "What is your name: ");
+            string userName;
+            char charName[12];
+
+            int x = 19; int y = 0; wmove(window, y, x);
+            int letterCounter = 0;
+            char ch;
+            echo;
+            while(letterCounter < 12 && ch != '\n')
+            {
+                ch = wgetch(window);
+                if(ch == '\n')
+                {
+                    break;
+                }
+                else
+                {
+                    charName[letterCounter] = ch;
+                    mvwaddch(window, y, x, ch);
+                }
+                letterCounter++;
+                x++;
+            }
+
+            userName = string(charName);
+
+
+
+            if(userName.size() > 12)
+            {
+                goodInput = false;
+            }
+            else
+            {
+                goodInput = true;
+                name = name.substr(0, letterCounter);
+                name = userName;
+            }
+        }
+        werase(window);
+    }
+
+    void makeAIPlayer()
+    {
+        player* computer;
+        int testInt;
+
+        //gender
+        testInt = rand() % 2;
+        char compGender;
+        if(testInt == 0)
+        {
+            compGender = 'M';
+        }
+        else
+        {
+            compGender = 'F';
+
+        }
+        setGender(compGender);
+
+        //name
+        string boyNames[3] = {"Terry", "Bill", "Alex"};
+        string girlNames[3] = {"Nicole", "Kelly", "Aphrodite"};
+        testInt = rand() % 3;
+        if(compGender == 'M')
+        {
+            setName(boyNames[testInt]);
+        }
+        else
+        {
+            setName(girlNames[testInt]);
+        }
+    }
+
+    void getMarried()
+    {//Sorry, for simplicity of code design there will be no Gay/Lesbian Marriage. This is Life in America, not the Netherlands
+        if(gender == 'M')
+        {
+            setSpouse('F');
+        }
+        else
+        {
+            setSpouse('M');
+        }
+    }
+
+    void haveKid(char kidGender, WINDOW* window)
+    {
+        if(kid1 == ' ')
+        {
+            kid1 = kidGender;
+            addKid();
+        }
+        else if(kid2 == '_')
+        {
+            kid2 = kidGender;
+            addKid();
+        }
+        else if(kid3 == ' ')
+        {
+            kid3 = kidGender;
+            addKid();
+        }
+        else if(kid4 == '_')
+        {
+            kid4 = kidGender;
+            addKid();
+        }
+        else
+        {
+            mvwprintw(window, interfaceY, interfaceX + 6, "You can't have anymore kids.");
+        }
+    }
+
+    //Accessor Methods
+    void setName(string userName) { name = userName; }
+    string getName() { return name; }
+    void setGender(char userGender) { gender = userGender; }
+    char getGender() { return gender; }
+    void setSalary(int userSalary) { salary = userSalary; }
+    int getSalary() { return salary; }
+    void addMoney(int moneyToAdd) { money = money + moneyToAdd; }
+    int getMoney() { return money; }
+    void addLifeCards() { lifeCards++; }
+    int getLifeCards() { return lifeCards; }
+    void setX(int newX) { xCoord = newX; }
+    int getXCoord() { return xCoord; }
+    void setY(int newY) { yCoord = newY; }
+    int getYCoord() { return yCoord; }
+    void setInterfaceX(int newX) { interfaceX = newX; }
+    int getInterfaceXCoord() { return interfaceX; }
+    void setInterfaceY(int newY) { interfaceY = newY; }
+    int getInterfaceYCoord() { return interfaceY; }
+    void setSpouse(char spouseGender) { spouse = spouseGender; }
+    char getSpouse() { return spouse; }
+    void addKid() { if(kidCount < 4) { kidCount++; }}
+    int getKidCount() { return kidCount; }
+    void setKid1(char gender) { kid1 = gender; }
+    char getKid1 () { return kid1; }
+    void setKid2(char gender) { kid2 = gender; }
+    char getKid2 () { return kid2; }
+    void setKid3(char gender) { kid3 = gender; }
+    char getKid3 () { return kid3; }
+    void setKid4(char gender) { kid4 = gender; }
+    char getKid4 () { return kid4; }
+
+
+private:
+    string name;
+    char gender;
+    int salary;
+    int money;
+    int lifeCards;
+    int xCoord;
+    int yCoord;
+    int interfaceX;
+    int interfaceY;
+    char spouse;
+    int kidCount;
+    char kid1;
+    char kid2;
+    char kid3;
+    char kid4;
+};
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+***********************************************************************************************************************************
+*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Structures
+struct career
+{
+    string title;
+    int salary;
+    int maxSalary;
+    int taxes;
+};
+
+struct house
+{
+    string name;
+    int cost;
+    int worth;
+};
