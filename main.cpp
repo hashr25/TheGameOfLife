@@ -19,8 +19,8 @@ using namespace std;
 #include <ctime>        //Seed for random
 //#include <string>       //Strings
 //#include <vector>       //Vectors
-#include "player.h"     //player class
 #include "tile.h"       //tile class
+#include "player.h"     //player class
 //#include <iostream>             //can remove after debugging
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
 #include "player.h"
 #include <cstdlib>
+#include "tile.h"
 
 //Constructor
 player::player()

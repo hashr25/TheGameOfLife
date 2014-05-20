@@ -22,7 +22,7 @@ tile::~tile()
 *//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Member Methods
-void tile::createTile(string tileInfo)
+void tile::createTile(std::string tileInfo)
 {
     setInfo(tileInfo);
 }
@@ -33,7 +33,7 @@ void tile::createTile(string tileInfo)
 
 
 //Accessor Functions
-void tile::setInfo(string info)
+void tile::setInfo(std::string info)
 {
     this -> info = info;
 }
@@ -90,7 +90,7 @@ void tile::setSplit(tile* split)
 
 ////////////////////////////////////////////////////////////
 
-string tile::getInfo()
+std::string tile::getInfo()
 {
     return info;
 }

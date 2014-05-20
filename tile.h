@@ -1,6 +1,8 @@
 #ifndef TILE_H
 #define TILE_H
 
+#include <string>
+
 
 //Enumerated Type for Function
 enum tileFunction
@@ -53,7 +55,7 @@ public:
     *//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //Member Methods
-    void createTile(string);
+    void createTile(std::string);
 
     /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ***********************************************************************************************************************************
@@ -61,7 +63,7 @@ public:
 
 
     //Accessor Functions
-    void setInfo(string);
+    void setInfo(std::string);
     void setPayout(int);
     void setTilePurpose(tileFunction);
     void setXOne(int);
@@ -73,7 +75,7 @@ public:
     void setNext(tile*);
     void setSplit(tile*);
 
-    string getInfo();
+    std::string getInfo();
     int getPayout();
     tileFunction getTilePurpose();
     int getXOne();
@@ -87,7 +89,7 @@ public:
 
 //Private Data
 private:
-    string info;
+    std::string info;
     int payout;
     tileFunction tilePurpose;
     int xOne;
