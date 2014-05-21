@@ -17,8 +17,6 @@ using namespace std;
 #include <cstdlib>      //Random
 #include <fstream>      //files                //MAKE SURE YOU NEED ALL THESE WHEN YOU ARE DONE
 #include <ctime>        //Seed for random
-//#include <string>       //Strings
-//#include <vector>       //Vectors
 #include "tile.h"       //tile class
 #include "player.h"     //player class
 //#include <iostream>             //can remove after debugging
